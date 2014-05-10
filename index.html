@@ -2,62 +2,12 @@
 <body>
 <head>
   <meta name="viewport" content="width=device-width, user-scalable=no">
-  <style type="text/css">
-  body{
-    overflow: hidden;
-    background: #333;
-    padding: 0;
-    margin: 0;
-  }
-
-  .target-range{
-    fill: #666;
-    fill-opacity: .3;
-    shape-rendering: crispEdges;
-  }
-
-  .sugar-line{
-    fill: none;
-    stroke: #f7f7f7;
-    stroke-width: 1px;
-    stroke-opacity: .8;
-  }
-
-  .currentDate{
-    stroke-opacity: 1;
-    fill-opacity: 1;
-    stroke: #f00;
-    stroke-width: 2px;
-  }
-
-  .axis {
-    shape-rendering: crispEdges;
-    font-family: arial, sans-serif;
-    font-size: 12px;
-  }
-
-  .y.axis line, .y.axis path {
-    fill: none;
-    stroke: #ddd;
-  }
-
-  .glucose-sample{
-    fill: #f7f7f7;
-
-    fill-opacity: .8;
-  }
-  #date{
-    position: absolute;
-    left: 20px;
-    top: 20px;
-    z-index: 100;
-  }
-  </style>
+  <link rel="stylesheet" type="text/css" href="assets/css/sugar.css">
 </head>
 
-<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="assets/js/underscore-min.js"></script>
+<script src="assets/js/jquery-2.1.1.min.js"></script>
+<script src="assets/js/d3.v3.min.js" charset="utf-8"></script>
 
 <select id="date">
 </select>
