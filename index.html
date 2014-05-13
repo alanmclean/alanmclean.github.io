@@ -19,8 +19,8 @@
 <script type="text/javascript">
 // Establish how big you want the chart to be
 var margin  = { top: 10, right: 0, bottom: 10, left: 0 };
-var width   = $(window).width() - margin.left - margin.right;
-var height  = Math.round((width / 16) * 9) - margin.top - margin.bottom;
+var width   = $(window).width()
+var height  = $(window).height()
 
 var maxSugar = 400;
 var minSugar = 30;
@@ -40,10 +40,10 @@ The margins applied here allow svg elements to have a little padding
 and not exceed the edges.
 */
 var svg = d3.select('#chart-container').append('svg')
-  .attr('width', width + margin.left + margin.right)
-  .attr('height', height + margin.top + margin.bottom)
-    .append('g')
-      .attr('transform', 'translate('+margin.left+', '+margin.top+')');
+  .attr('width', width)
+  .attr('height', height)
+
+
 
 /*
 Scales determine where points should go on your chart
@@ -85,6 +85,8 @@ d3.csv(url, function(data){
     .key(function(d){ return d.dateStr })
     .map(_.reject(data, function(d){ return d.glucose == 0 }))
 
+  defs  = svg.append('defs')
+
   var x = d3.scale.linear()
     .domain([0, 86400])
     .range([0, width]);
@@ -99,12 +101,97 @@ d3.csv(url, function(data){
     .y(function(d) { return y(d.glucose); })
     .interpolate("cardinal")
 
-  svg.append('rect')
+  rect = svg.append('rect')
     .attr('x', 0)
-    .attr('y', y(targetMax))
+    .attr('y', 0)
     .attr('width', width)
-    .attr('height', y(targetMin) - y(targetMax))
+    .attr('height', y(targetMax))
     .attr('class', 'target-range')
+
+  rect2 = svg.append('rect')
+    .attr('x', 0)
+    .attr('y', y(targetMin))
+    .attr('width', width)
+    .attr('height', height)
+
+
+  // rect = svg.append('rect')
+  //   .attr('x', 0)
+  //   .attr('y', 0)
+  //   .attr('width', width)
+  //   .attr('height', height)
+  //   .attr('class', 'target-range')
+
+  var xAxis = d3.svg.axis().scale(x).tickSize(-height)
+    .tickValues([21600 , 86400 / 2, 64800])
+    .tickFormat(function(d){
+      return new Date(null, null, null, null, null, d).toTimeString().match(/\d{2}:\d{2}/)[0]
+    })
+
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + (height - 30) + ")")
+      .call(xAxis);
+
+  topGradient = defs.append('linearGradient')
+    .attr('id', 'topGradient')
+    .attr('x1', 0)
+    .attr('y1', 0)
+    .attr('x2', 0)
+    .attr('y2', 1);
+
+  topGradient.append('stop')
+    .attr('offset', '0%')
+    .attr('stop-color', '#000');
+
+  topGradient.append('stop')
+    .attr('offset', '100%')
+    .attr('stop-color', '#f00')
+    .attr('stop-opacity', '.5')
+
+
+  bottomGradient = defs.append('linearGradient')
+    .attr('id', 'bottomGradient')
+    .attr('x1', 0)
+    .attr('y1', 0)
+    .attr('x2', 0)
+    .attr('y2', 1);
+
+  bottomGradient.append('stop')
+    .attr('offset', '0%')
+    .attr('stop-color', 'steelblue')
+    .attr('stop-opacity', '.1')
+
+  bottomGradient.append('stop')
+    .attr('offset', '100%')
+    .attr('stop-color', '#000')
+
+
+
+
+
+  rect.attr('fill', 'url(#topGradient)')
+  rect2.attr('fill', 'url(#bottomGradient)')
+
+
+
+  d3.selectAll('.x.axis line')
+    .attr('stroke', 'url(#strokeGradient)')
+
+  svg.append('line')
+    .attr('x1', 0)
+    .attr('x2', width)
+    .attr('y1', y(targetMax))
+    .attr('y2', y(targetMax))
+    .attr('class', 'topRange')
+
+  svg.append('line')
+    .attr('x1', 0)
+    .attr('x2', width)
+    .attr('y1', y(targetMin))
+    .attr('y2', y(targetMin))
+    .attr('class', 'bottomRange')
 
   svg.selectAll('.sugar-line')
     .data(_.toArray(tests))
