@@ -12,9 +12,9 @@
 
   .sugar-line{
     fill: none;
-    stroke: #fff;
+    stroke: #f00;
     stroke-width: 1px;
-    stroke-opacity: .35;
+    stroke-opacity: .65;
 
   }
 
@@ -29,11 +29,11 @@
 
   .axis line{
     shape-rendering: crispEdges;
-    stroke: #ddd;
+    stroke: steelBlue;
     stroke-width: 1px;
     fill: none;
-    stroke-opacity: .7;
-    stroke-dashArray: 1,3;
+    stroke-opacity: .4;
+
   }
 
 
@@ -44,6 +44,19 @@
     font-weight: bold;
     fill-opacity: 1;
     text-shadow: 1px 1px 1px rgba(0,0,0,.3);
+  }
+
+  .y.axis text{
+    text-anchor: start;
+    font-weight: normal;
+    fill-opacity: .7;
+  }
+  .y.axis line{
+    stroke: #fff;
+  }
+
+  .y .tick:last-child{
+    display: none !important;
   }
 
 

@@ -20,7 +20,7 @@
 // Establish how big you want the chart to be
 var margin  = { top: 10, right: 0, bottom: 10, left: 0 };
 var width   = $(window).width()
-var height  = $(window).height()
+var height  = Math.round((width/16) * 9);
 
 var maxSugar = 400;
 var minSugar = 30;
@@ -103,25 +103,35 @@ d3.csv(url, function(data){
 
 
 
-  // rect = svg.append('rect')
-  //   .attr('x', 0)
-  //   .attr('y', 0)
-  //   .attr('width', width)
-  //   .attr('height', height)
-  //   .attr('class', 'target-range')
+  rect = svg.append('rect')
+    .attr('x', 0)
+    .attr('y', 0)
+    .attr('width', width)
+    .attr('height', (y(targetMin) - y(targetMax)))
+    .attr('class', 'target-range')
 
-  var xAxis = d3.svg.axis().scale(x).tickSize(-height)
+  var xAxis = d3.svg.axis().scale(x).tickSize(-(y(targetMin) - y(targetMax)))
+    .tickPadding(10)
     .tickValues([21600 , 86400 / 2, 64800])
     .tickFormat(function(d){
       suffix = (d < (86400 / 2)) ? ' AM' : ' PM'
       return new Date(null, null, null, null, null, d).toTimeString().match(/\d{2}:\d{2}/)[0]+suffix
     })
 
+  var yAxis = d3.svg.axis().scale(y).orient('left')
+    .tickPadding(-54)
+    .tickSize(-6)
+    .tickFormat(function(d){
+      return d+' mg'
+    })
+
 
   svg.append("g")
       .attr("class", "x axis")
-      .attr("transform", "translate(0," + (height - 50) + ")")
+      .attr("transform", "translate(0," + (y(targetMin)) + ")")
       .call(xAxis);
+
+
 
   topGradient = defs.append('linearGradient')
     .attr('id', 'topGradient')
@@ -133,12 +143,12 @@ d3.csv(url, function(data){
   topGradient.append('stop')
     .attr('offset', '0%')
     .attr('stop-color', '#000')
-    .attr('stop-opacity', '.3')
+    .attr('stop-opacity', '.2')
 
   topGradient.append('stop')
     .attr('offset', '100%')
-    .attr('stop-color', '#f00')
-    .attr('stop-opacity', '.3')
+    .attr('stop-color', 'steelblue')
+    .attr('stop-opacity', '.2')
 
 
   bottomGradient = defs.append('linearGradient')
@@ -151,12 +161,12 @@ d3.csv(url, function(data){
   bottomGradient.append('stop')
     .attr('offset', '0%')
     .attr('stop-color', 'steelblue')
-    .attr('stop-opacity', '.3')
+    .attr('stop-opacity', '.2')
 
   bottomGradient.append('stop')
     .attr('offset', '100%')
     .attr('stop-color', '#000')
-    .attr('stop-opacity', '.3')
+    .attr('stop-opacity', '.2')
 
 
 
@@ -203,7 +213,7 @@ d3.csv(url, function(data){
     .attr('y', 0)
     .attr('width', width)
     .attr('height', y(targetMax))
-    .attr('class', 'target-range')
+
 
   rect2 = svg.append('rect')
     .attr('x', 0)
@@ -214,26 +224,32 @@ d3.csv(url, function(data){
   rect.attr('fill', 'url(#topGradient)')
   rect2.attr('fill', 'url(#bottomGradient)')
 
-  svg.append('line')
-    .attr('class', 'topRange')
-    .attr('x1', 70)
-    .attr('x2', width)
-    .attr('y1', y(targetMax))
-    .attr('y2', y(targetMax))
 
-  svg.append('text')
-    .attr('x', 15)
-    .attr('y', y(targetMax))
-    .attr('class', 'max-sugar-label')
-    .text(targetMax+'mg')
-    .attr('dy', 5)
+  svg.append("g")
+      .attr("class", "y axis")
+      .attr("transform", "translate(0,0)")
+      .call(yAxis);
 
-  svg.append('text')
-    .attr('x', 15)
-    .attr('y', y(targetMin))
-    .attr('class', 'min-sugar-label')
-    .text(targetMin+'mg')
-    .attr('dy', 5)
+  // svg.append('line')
+  //   .attr('class', 'topRange')
+  //   .attr('x1', 70)
+  //   .attr('x2', width)
+  //   .attr('y1', y(targetMax))
+  //   .attr('y2', y(targetMax))
+
+  // svg.append('text')
+  //   .attr('x', 15)
+  //   .attr('y', y(targetMax))
+  //   .attr('class', 'max-sugar-label')
+  //   .text(targetMax+'mg')
+  //   .attr('dy', 5)
+
+  // svg.append('text')
+  //   .attr('x', 15)
+  //   .attr('y', y(targetMin))
+  //   .attr('class', 'min-sugar-label')
+  //   .text(targetMin+'mg')
+  //   .attr('dy', 5)
 
 
   var tooltip = svg.append('text')
