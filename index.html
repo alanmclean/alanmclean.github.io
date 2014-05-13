@@ -113,7 +113,8 @@ d3.csv(url, function(data){
   var xAxis = d3.svg.axis().scale(x).tickSize(-height)
     .tickValues([21600 , 86400 / 2, 64800])
     .tickFormat(function(d){
-      return new Date(null, null, null, null, null, d).toTimeString().match(/\d{2}:\d{2}/)[0]
+      suffix = (d < (86400 / 2)) ? ' AM' : ' PM'
+      return new Date(null, null, null, null, null, d).toTimeString().match(/\d{2}:\d{2}/)[0]+suffix
     })
 
 
@@ -132,7 +133,7 @@ d3.csv(url, function(data){
   topGradient.append('stop')
     .attr('offset', '0%')
     .attr('stop-color', '#000')
-    .attr('stop-opacity', '.1')
+    .attr('stop-opacity', '.3')
 
   topGradient.append('stop')
     .attr('offset', '100%')
@@ -150,12 +151,12 @@ d3.csv(url, function(data){
   bottomGradient.append('stop')
     .attr('offset', '0%')
     .attr('stop-color', 'steelblue')
-    .attr('stop-opacity', '.1')
+    .attr('stop-opacity', '.3')
 
   bottomGradient.append('stop')
     .attr('offset', '100%')
     .attr('stop-color', '#000')
-    .attr('stop-opacity', '.1')
+    .attr('stop-opacity', '.3')
 
 
 
@@ -212,6 +213,13 @@ d3.csv(url, function(data){
 
   rect.attr('fill', 'url(#topGradient)')
   rect2.attr('fill', 'url(#bottomGradient)')
+
+  svg.append('line')
+    .attr('class', 'topRange')
+    .attr('x1', 70)
+    .attr('x2', width)
+    .attr('y1', y(targetMax))
+    .attr('y2', y(targetMax))
 
   svg.append('text')
     .attr('x', 15)
