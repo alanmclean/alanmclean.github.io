@@ -94,7 +94,7 @@ d3.csv(url, function(data){
   // The Y scale will use the heartrate value
   var y = d3.scale.linear()
     .domain([maxSugar, minSugar])
-    .range([0, height]);
+    .range([300, height]);
 
   var line = d3.svg.line()
     .x(function(d) { return x(d.time); })
@@ -121,6 +121,7 @@ d3.csv(url, function(data){
   var yAxis = d3.svg.axis().scale(y).orient('left')
     .tickPadding(-54)
     .tickSize(-6)
+    .tickValues([targetMin, targetMax, 250])
     .tickFormat(function(d){
       return d+' mg'
     })
