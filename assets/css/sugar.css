@@ -68,7 +68,7 @@
 .bottomRange, .topRange{
   shape-rendering: crispEdges;
   stroke-dashArray: 1, 5;
-  stroke: pink;
+  stroke: #f00;
   stroke-opacity: .6;
 }
 
