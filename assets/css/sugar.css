@@ -35,7 +35,9 @@
     stroke-opacity: .4;
 
   }
-
+/*  .x.axis line{
+    display: none;
+  }*/
 
 
   .tick text{

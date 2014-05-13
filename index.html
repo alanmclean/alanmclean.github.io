@@ -110,7 +110,7 @@ d3.csv(url, function(data){
     .attr('height', (y(targetMin) - y(targetMax)))
     .attr('class', 'target-range')
 
-  var xAxis = d3.svg.axis().scale(x).tickSize(-(y(targetMin) - y(targetMax)))
+  var xAxis = d3.svg.axis().scale(x).tickSize(-6)
     .tickPadding(10)
     .tickValues([21600 , 86400 / 2, 64800])
     .tickFormat(function(d){
