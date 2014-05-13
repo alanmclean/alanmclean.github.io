@@ -20,7 +20,7 @@
 // Establish how big you want the chart to be
 var margin  = { top: 10, right: 0, bottom: 10, left: 0 };
 var width   = $(window).width()
-var height  = Math.round((width/16) * 9);
+var height  = Math.round((width/16) * 9) - 100
 
 var maxSugar = 400;
 var minSugar = 30;
@@ -94,7 +94,7 @@ d3.csv(url, function(data){
   // The Y scale will use the heartrate value
   var y = d3.scale.linear()
     .domain([maxSugar, minSugar])
-    .range([300, height]);
+    .range([200, height]);
 
   var line = d3.svg.line()
     .x(function(d) { return x(d.time); })
