@@ -123,7 +123,7 @@ d3.csv(url, function(data){
     .tickSize(-6)
     .tickValues([targetMin, targetMax, 250])
     .tickFormat(function(d){
-      return d+' mg'
+      return (d/ 18.1).toFixed(1) +' mmo'
     })
 
 
